@@ -1,7 +1,7 @@
 services:
   - type: worker
     name: marine-edge-telegram-bot
-    runtime: python3
+    env: python
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
@@ -25,7 +25,7 @@ services:
 
   - type: worker
     name: marine-edge-pdf-processor
-    runtime: python3
+    env: python
     buildCommand: |
       pip install --upgrade pip
       pip install -r requirements.txt
