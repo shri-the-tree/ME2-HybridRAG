@@ -5,3 +5,8 @@ faiss-cpu
 PyPDF2
 python-dotenv
 numpy
+together
+langchain-community
+langchain-text-splitters
+rank-bm25
+nltk
