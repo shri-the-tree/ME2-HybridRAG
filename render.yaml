@@ -1,0 +1,43 @@
+services:
+  - type: worker
+    name: marine-edge-telegram-bot
+    runtime: python3
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab'); nltk.download('stopwords')"
+    startCommand: python telegram_bot.py
+    envVars:
+      - key: TELEGRAM_TOKEN
+        sync: false
+      - key: TOGETHER_API_KEY
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: PDF_DIRECTORY
+        value: ./pdfs
+      - key: VECTOR_DB_DIRECTORY
+        value: /opt/render/project/src/faiss_db
+    disk:
+      name: marine-edge-data
+      mountPath: /opt/render/project/src/faiss_db
+      sizeGB: 1
+
+  - type: worker
+    name: marine-edge-pdf-processor
+    runtime: python3
+    buildCommand: |
+      pip install --upgrade pip
+      pip install -r requirements.txt
+      python -c "import nltk; nltk.download('punkt'); nltk.download('punkt_tab'); nltk.download('stopwords')"
+    startCommand: python process_pdfs.py
+    envVars:
+      - key: PDF_DIRECTORY
+        value: ./pdfs
+      - key: VECTOR_DB_DIRECTORY
+        value: /opt/render/project/src/faiss_db
+    disk:
+      name: marine-edge-data
+      mountPath: /opt/render/project/src/faiss_db
+      sizeGB: 1
+    autoDeploy: false
